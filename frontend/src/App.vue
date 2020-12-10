@@ -5,59 +5,56 @@
         </form>
         <div v-else>Loading...</div>
     </div>
-    <post-item
-        v-else
-        v-for="post in data.csv"
-        :key="post.postId"
-        :post="post"
-    ></post-item>
+    <virtual-scroller :items="data.csv" v-else></virtual-scroller>
 </template>
 
 <script>
     import Papa from "papaparse";
-    import PostItem from "./components/PostItem.vue";
+    import VirtualScroller from "./components/VirtualScroller";
 
     export default {
         name: "App",
-        components: { PostItem },
+        components: { VirtualScroller },
         data() {
             return {
                 data: {
-                    // csv: null,
-                    csv: [
-                        {
-                            url:
-                                "https://cdn.sharechat.com/1a40b23d_1606974965867_sc.mp4",
-                            userId: 59096277,
-                            postId: 5906298332,
-                            tagGenre: "Humour and Fun",
-                            type: "video",
-                            language: "Marathi",
-                            shares: 10,
-                            likes: 35,
-                            favs: 13,
-                            comment_created: 0,
-                            views: 5429,
-                            eByV: 0.010683367,
-                            tagName: "tagName",
-                        },
-                        {
-                            url:
-                                "https://cdn.sharechat.com/25fa0daa_1606900878523_sc.mp4",
-                            userId: 426114987,
-                            postId: 9564235332,
-                            tagGenre: "Politics",
-                            type: "video",
-                            language: "Punjabi",
-                            shares: 70,
-                            likes: 695,
-                            favs: 100,
-                            comment_created: 19,
-                            views: 15459,
-                            eByV: 0.057183518,
-                            tagName: "tagName",
-                        },
-                    ],
+                    csv: null,
+                    // csv: [
+                    //     {
+                    //         id: 1,
+                    //         url:
+                    //             "https://cdn.sharechat.com/1a40b23d_1606974965867_sc.mp4",
+                    //         userId: 59096277,
+                    //         postId: 5906298332,
+                    //         tagGenre: "Humour and Fun",
+                    //         type: "video",
+                    //         language: "Marathi",
+                    //         shares: 10,
+                    //         likes: 35,
+                    //         favs: 13,
+                    //         comment_created: 0,
+                    //         views: 5429,
+                    //         eByV: 0.010683367,
+                    //         tagName: "tagName",
+                    //     },
+                    //     {
+                    //         id: 2,
+                    //         url:
+                    //             "https://cdn.sharechat.com/25fa0daa_1606900878523_sc.mp4",
+                    //         userId: 426114987,
+                    //         postId: 9564235332,
+                    //         tagGenre: "Politics",
+                    //         type: "video",
+                    //         language: "Punjabi",
+                    //         shares: 70,
+                    //         likes: 695,
+                    //         favs: 100,
+                    //         comment_created: 19,
+                    //         views: 15459,
+                    //         eByV: 0.057183518,
+                    //         tagName: "tagName",
+                    //     },
+                    // ],
                 },
                 loading: false,
             };
@@ -68,8 +65,9 @@
                 let columns = posts[0];
                 let newCsv = [];
                 for (let i = 1; i < posts.length; i++) {
-                    let post = {};
                     let row = posts[i];
+                    let post = {};
+                    // let post = { id: row[2] }; // id required for virtual scrolling
                     for (let j = 0; j < row.length; j++) {
                         post[columns[j]] = row[j];
                     }

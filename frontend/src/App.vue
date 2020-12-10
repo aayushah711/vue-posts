@@ -76,6 +76,7 @@
                     newCsv.push(post);
                 }
                 this.data.csv = newCsv;
+                this.loading = false;
             },
             readData(output) {
                 // gets the data in arrays
@@ -101,7 +102,6 @@
                 if (file) {
                     this.readFile(file);
                 }
-                this.loading = false;
             },
         },
     };
@@ -109,7 +109,7 @@
 
 <style>
     #app {
-        font-family: Avenir, Helvetica, Arial, sans-serif;
+        font-family: Noto Sans, Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-align: center;

@@ -7,6 +7,14 @@
         <div v-else>Loading...</div>
     </div>
     <virtual-scroller :items="data.csv" v-else></virtual-scroller>
+    <div v-if="data.csv" class="fab" @click="goBack">
+        <img
+            src="resources/svg/left.svg"
+            alt="go back"
+            title="Go back"
+            height="25"
+        />
+    </div>
 </template>
 
 <script>
@@ -66,6 +74,9 @@
         },
         watch: {},
         methods: {
+            goBack() {
+                this.data.csv = null;
+            },
             writeData(posts) {
                 let columns = posts[0];
                 let newCsv = [];
@@ -129,5 +140,21 @@
         background: #f5f2f2;
         margin: 0;
         height: 100%;
+    }
+    .fab {
+        position: absolute;
+        padding: 20px;
+        bottom: 20px;
+        right: 20px;
+        height: 25px;
+        width: 25px;
+        box-shadow: 0 0 3pt 2pt white;
+        border-radius: 50%;
+        background-color: #1aa0e8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        color: white;
     }
 </style>

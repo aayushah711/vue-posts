@@ -14,7 +14,10 @@
                 </div>
                 <div class="post-content-other">
                     <div>{{ post.language }}</div>
-                    <div class="post-clicks" title="Engagement By View">
+                    <div
+                        class="post-engagement post-clicks"
+                        title="Engagement By View"
+                    >
                         <img
                             height="24"
                             src="/resources/svg/engagement.svg"
@@ -24,8 +27,29 @@
                     </div>
                 </div>
             </div>
-            <div class="post-video">
-                <video controls preload="metadata">
+            <div class="post-video" @click="togglePlayer">
+                <div class="player-control" v-if="!playPlayer">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="11"
+                            fill="#000"
+                            fill-opacity="0.4"
+                            stroke="#fff"
+                        ></circle>
+                        <path
+                            d="M8.307 16.879V6.957c0-.859.967-1.362 1.67-.87l7.087 4.961a1.062 1.062 0 010 1.74l-7.087 4.96a1.062 1.062 0 01-1.67-.87z"
+                            fill="#fff"
+                        ></path>
+                    </svg>
+                </div>
+                <video
+                    ref="player"
+                    preload="metadata"
+                    @ended="videoEnded"
+                    @timeupdate="updateProgress"
+                >
                     <source :src="post.url" />
                 </video>
             </div>
@@ -71,12 +95,36 @@
 <script>
     export default {
         props: ["post"],
+        data() {
+            return { playPlayer: false, percentage: 0.0 };
+        },
         computed: {
             engagement() {
                 return parseFloat(this.post.eByV).toFixed(2);
             },
             genre() {
                 return this.post.tagGenre === "N/A" ? false : true;
+            },
+        },
+        methods: {
+            togglePlayer() {
+                this.playPlayer = !this.playPlayer;
+            },
+            videoEnded() {
+                this.playPlayer = false;
+            },
+            updateProgress() {
+                // const vid = this.$refs.player;
+                // const percentage = (vid.currentTime / vid.duration) * 100;
+            },
+        },
+        watch: {
+            playPlayer(value) {
+                if (value) {
+                    this.$refs.player.play();
+                } else {
+                    this.$refs.player.pause();
+                }
             },
         },
     };
@@ -137,6 +185,7 @@
         background-color: black;
         width: 100%;
         max-height: 500px;
+        cursor: pointer;
     }
     video {
         max-width: 100%;
@@ -144,6 +193,13 @@
         margin: 0 auto;
         padding: 0;
         object-fit: contain;
+    }
+    .player-control {
+        width: 150px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
     .post-tags {
         text-align: left;
@@ -182,5 +238,8 @@
     }
     .post-content-other {
         text-align: right;
+    }
+    .post-engagement {
+        padding-top: 5px;
     }
 </style>

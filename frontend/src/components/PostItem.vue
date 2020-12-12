@@ -26,7 +26,7 @@
                     <div class="post-clicks" title="likes">
                         <img
                             height="20"
-                            src="/resources/icons/like.png"
+                            src="/resources/svg/like.svg"
                             alt="like"
                         />
                         <div>{{ post.likes }}</div>

@@ -15,6 +15,9 @@
 
     export default {
         name: "App",
+        created() {
+            document.title = "Posts";
+        },
         components: { VirtualScroller, DragDrop },
         data() {
             return {
@@ -115,7 +118,7 @@
         text-align: center;
         color: #2c3e50;
         min-height: 98vh;
-        background: #fafafa;
+        background: #f5f2f2;
         height: 100%;
     }
     .container {

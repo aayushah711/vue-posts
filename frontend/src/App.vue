@@ -1,5 +1,6 @@
 <template>
     <div v-if="!data.csv" class="container">
+        <h1>ShareChat Post Visualization Tool</h1>
         <drag-drop v-if="!loading" @fileReceived="checkFile">
             <input ref="csv" type="file" accept=".csv" @change="checkFile" />
         </drag-drop>
@@ -16,7 +17,7 @@
     export default {
         name: "App",
         created() {
-            document.title = "Posts";
+            document.title = "ShareChat Post Visualization Tool";
         },
         components: { VirtualScroller, DragDrop },
         data() {
@@ -118,7 +119,6 @@
         text-align: center;
         color: #2c3e50;
         min-height: 98vh;
-        background: #f5f2f2;
         height: 100%;
     }
     .container {
@@ -126,6 +126,7 @@
     }
     body,
     html {
+        background: #f5f2f2;
         margin: 0;
         height: 100%;
     }

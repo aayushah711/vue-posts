@@ -39,11 +39,9 @@
             const fileformDiv = ref(null);
             const fileform = ref(null);
             const preventDefaultAlert = (e) => {
-                console.log("dropped");
                 file.value =
                     (e.dataTransfer && e.dataTransfer.files[0]) ||
                     e.target.files[0];
-                console.log(file.value);
                 let fileType = file.value.name.split(".");
                 fileType = fileType[fileType.length - 1];
                 if (fileType === "csv") {
@@ -66,7 +64,7 @@
         display: block;
         max-height: 400px;
         max-width: 400px;
-        background: #ccc;
+        background: #fff;
         margin: auto;
         margin-top: 40px;
         text-align: center;

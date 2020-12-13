@@ -1,67 +1,64 @@
 <template>
     <div class="post-container">
+        <div class="empty-space"></div>
         <div class="post-content-main">
             <div class="post-header">
                 <div>
                     <div class="post-user-id">User ID: {{ post.userId }}</div>
                     <div class="post-views">
-                        <div>
-                            Post ID: {{ post.postId }}
-                            <span class="post-type">{{ post.type }}</span>
-                        </div>
+                        <div>Post ID: {{ post.postId }}</div>
                         <div>{{ post.views }} views</div>
+                        <div class="post-details">
+                            <span class="post-type" title="type">{{
+                                post.type
+                            }}</span>
+                            <span
+                                class="post-type"
+                                title="genre"
+                                v-if="genre"
+                                >{{ post.tagGenre }}</span
+                            >
+                        </div>
                     </div>
                 </div>
                 <div class="post-content-other">
-                    <div>{{ post.language }}</div>
+                    <div title="language">{{ post.language }}</div>
                     <div
                         class="post-engagement post-clicks"
                         title="Engagement By View"
                     >
                         <img
                             height="24"
-                            src="/resources/svg/engagement.svg"
+                            src="/resources/svg/engagementByView.svg"
                             alt="engagement"
                         />
                         <div>{{ engagement }}</div>
                     </div>
                 </div>
             </div>
-            <div class="post-video" @click="togglePlayer">
-                <div class="player-control" v-if="!playPlayer">
-                    <svg viewBox="0 0 24 24" fill="none">
-                        <circle
-                            cx="12"
-                            cy="12"
-                            r="11"
-                            fill="#000"
-                            fill-opacity="0.4"
-                            stroke="#fff"
-                        ></circle>
-                        <path
-                            d="M8.307 16.879V6.957c0-.859.967-1.362 1.67-.87l7.087 4.961a1.062 1.062 0 010 1.74l-7.087 4.96a1.062 1.062 0 01-1.67-.87z"
-                            fill="#fff"
-                        ></path>
-                    </svg>
-                </div>
+            <div class="post-video" @click="togglePlayer" v-if="isVideo">
                 <video
                     ref="player"
                     preload="metadata"
                     @ended="videoEnded"
                     @timeupdate="updateProgress"
+                    controls
                 >
                     <source :src="post.url" />
                 </video>
             </div>
+            <div class="post-video" v-else>
+                <img class="post-image" :src="post.url" alt="post.tagGenre" />
+            </div>
+
             <div class="post-tags">
-                <span v-if="genre" class="post-genre">{{ post.tagGenre }}</span>
                 <span>#{{ post.tagName }}</span>
             </div>
             <div class="post-actions">
                 <div class="post-clicks" title="shares">
                     <img
                         height="24"
-                        src="/resources/svg/whatsapp.svg"
+                        src="/resources/svg/share.svg"
                         alt="share"
                     />
                     <div>{{ post.shares }}</div>
@@ -81,14 +78,13 @@
                 <div class="post-clicks" title="favs">
                     <img
                         height="24"
-                        src="/resources/icons/heart.png"
+                        src="/resources/svg/likefalse.svg"
                         alt="favs"
                     />
                     <div>{{ post.favs }}</div>
                 </div>
             </div>
         </div>
-        <div class="post-content-other"></div>
     </div>
 </template>
 
@@ -104,6 +100,9 @@
             },
             genre() {
                 return this.post.tagGenre === "N/A" ? false : true;
+            },
+            isVideo() {
+                return this.post.type === "video";
             },
         },
         methods: {
@@ -134,7 +133,7 @@
     /* * {
         border: 1px dashed green;
     } */
-    .post-container {
+    /* .post-container {
         min-height: 40px;
         margin: 8px auto;
         max-width: 600px;
@@ -142,7 +141,7 @@
         font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
             Oxygen-Sans, Ubuntu, Cantarell, Helvetica Neue, sans-serif;
         background: white;
-    }
+    } */
     .post-content-main {
         min-height: 40px;
         width: 100%;
@@ -166,9 +165,9 @@
     }
     .post-type {
         border-radius: 15px;
-        padding: 5px 10px;
-        margin-left: 5px;
+        padding: 2px 10px;
         background-color: #1aa0e8;
+        margin: 5px 10px 0 0;
         color: white;
         font-size: 12px;
         vertical-align: baseline;
@@ -181,7 +180,46 @@
         line-height: 16px;
         max-width: 100%;
     }
+    .post-details {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
     .post-video {
+        background-color: #000;
+        width: 100%;
+        height: 0;
+        padding-bottom: 100%;
+        cursor: pointer;
+        position: relative;
+    }
+    video,
+    .post-image {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        -o-object-fit: contain;
+        object-fit: contain;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+    .post-container {
+        /* margin: 8px auto; */
+        margin: auto;
+        max-width: 400px;
+        display: flex;
+        flex-direction: column;
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+            Oxygen-Sans, Ubuntu, Cantarell, Helvetica Neue, sans-serif;
+        background: #fff;
+    }
+    .empty-space {
+        height: 8px;
+        background: #f5f2f2;
+    }
+
+    /* .post-video {
         background-color: black;
         width: 100%;
         max-height: 500px;
@@ -193,7 +231,7 @@
         margin: 0 auto;
         padding: 0;
         object-fit: contain;
-    }
+    } */
     .player-control {
         width: 150px;
         position: absolute;
@@ -203,7 +241,6 @@
     }
     .post-tags {
         text-align: left;
-        font-weight: 600;
         font-size: 14px;
         line-height: 20px;
         color: #1990bf;
@@ -232,7 +269,6 @@
     .post-clicks div {
         font-weight: 500;
         font-size: 12px;
-        font-family: Arial;
         /* line-height: 16px; */
         padding: 0 0 0 10px;
     }

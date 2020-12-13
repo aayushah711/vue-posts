@@ -7,7 +7,7 @@
         <div v-else>Loading...</div>
     </div>
     <virtual-scroller :items="data.csv" v-else></virtual-scroller>
-    <div v-if="data.csv" class="fab" @click="goBack">
+    <div v-if="data.csv" class="fab" @click="goBack" title="Go back">
         <img
             src="resources/svg/left.svg"
             alt="go back"
@@ -96,14 +96,13 @@
                 // gets the data in arrays
                 let posts = Papa.parse(output, { skipEmptyLines: true });
                 posts = posts.data;
-                console.log("posts", posts.length);
+                console.log(posts.length, "posts");
                 this.writeData(posts);
             },
             readFile(file) {
                 let reader = new FileReader();
                 reader.readAsText(file, "UTF-8");
                 reader.onload = (evt) => {
-                    console.log(evt.target.result);
                     this.readData(evt.target.result);
                 };
                 reader.onerror = () => {
@@ -111,7 +110,6 @@
                 };
             },
             checkFile(file) {
-                console.log("inside check file", file);
                 this.loading = true;
                 // let file = this.$refs.csv.files[0];
                 if (file) {
@@ -124,7 +122,8 @@
 
 <style>
     #app {
-        font-family: Noto Sans, Helvetica, Arial, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+            Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
@@ -148,7 +147,7 @@
         right: 20px;
         height: 25px;
         width: 25px;
-        box-shadow: 0 0 3pt 2pt white;
+        /* box-shadow: 0 0 2px 0 black; */
         border-radius: 50%;
         background-color: #1aa0e8;
         display: flex;
@@ -156,5 +155,9 @@
         align-items: center;
         cursor: pointer;
         color: white;
+        transition: ease-in 0.1s;
+    }
+    .fab:hover {
+        transform: scale(1.2);
     }
 </style>
